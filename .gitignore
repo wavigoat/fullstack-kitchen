@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# From react router:
+.DS_Store
+/node_modules/
+
+# React Router
+/.react-router/
+/build/
