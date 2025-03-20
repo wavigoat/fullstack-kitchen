@@ -1,7 +1,5 @@
 {
   "name": "fullstack-kitchen",
-  "version": "1.0.0",
-  "main": "build/server/index.js",
   "private": true,
   "type": "module",
   "scripts": {
@@ -28,7 +26,6 @@
   "devDependencies": {
     "@react-router/dev": "^7.1.5",
     "@tailwindcss/vite": "^4.0.0",
-    "@types/express": "^5.0.0",
     "@types/node": "^20",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.1",
