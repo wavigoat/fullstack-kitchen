@@ -3,10 +3,15 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router";
 import type { JSX } from "react";
+import "../../style.css";
+
+
 
 export default function LandingPage(): JSX.Element {
   // Footer navigation data
+  const navigate = useNavigate();
   const footerNavigation = [
     {
       title: "Topic",
@@ -29,20 +34,20 @@ export default function LandingPage(): JSX.Element {
       title: "Recipe 1",
       description:
         "Body text for whatever you'd like to add more to the subheading.",
-      imageBg: "bg-[url(/image-2.png)]",
+      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-1.png)]",
     },
     {
       id: 2,
       title: "Recipe 2",
       description:
         "Body text for whatever you'd like to expand on the main point.",
-      imageBg: "bg-[url(/image-3.png)]",
+      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-2.png)]",
     },
     {
       id: 3,
       title: "Recipe 3",
       description: "Body text for whatever you'd like to share more.",
-      imageBg: "bg-[url(/image-4.png)]",
+      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-3.png)]",
     },
   ];
 
@@ -78,11 +83,12 @@ export default function LandingPage(): JSX.Element {
         {/* Header */}
         <header className="w-full h-[164px] bg-collection-1-color-3">
           <div className="flex items-center justify-between px-20 py-14">
-            <div className="font-body-text text-[#5a4d3f]">FlavorShare</div>
+            <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/')}>FlavorShare</div>
             <div className="flex items-center gap-[var(--variable-collection-spacing-m)]">
               <div className="font-body-text text-[#5a4d3f]">Page</div>
               <div className="font-body-text text-[#5a4d3f]">Page</div>
-              <Button className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow">
+              <Button className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow"
+              onClick={() => navigate("/signup")}>
                 Log In
               </Button>
             </div>
@@ -100,13 +106,14 @@ export default function LandingPage(): JSX.Element {
               culinary enthusiasts to store, manage, and search for recipes
             </p>
           </div>
-          <Button className="bg-[#5a4d3f] text-white px-8 py-5 rounded-lg shadow-button-shadow text-2xl">
+          <Button className="bg-[#5a4d3f] text-white px-8 py-5 rounded-lg shadow-button-shadow text-2xl"
+           onClick={() => navigate("/signup")}>
             Sign up today
           </Button>
         </section>
 
         {/* Hero Image */}
-        <div className="w-[1280px] h-[640px] mt-[337px] mx-16 rounded-lg bg-[url(/hero-image.png)] bg-cover bg-[50%_50%]" />
+        <div className="w-[1280px] h-[640px] mt-[337px] mx-16 rounded-lg bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Hero%20Image.png)] bg-cover bg-[50%_50%]" />
 
         {/* Recent Recipes Section */}
         <section className="mt-[181px] px-20">
@@ -176,7 +183,7 @@ export default function LandingPage(): JSX.Element {
             </div>
           </div>
 
-          <div className="w-[704px] h-[704px] rounded-[8px_0px_0px_8px] bg-[url(/image.png)] bg-cover bg-[50%_50%]" />
+          <div className="w-[704px] h-[704px] rounded-[8px_0px_0px_8px] bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image.png)] bg-cover bg-[50%_50%]" />
         </section>
 
         {/* CTA Section */}
