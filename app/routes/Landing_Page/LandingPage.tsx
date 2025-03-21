@@ -88,7 +88,7 @@ export default function LandingPage(): JSX.Element {
               <div className="font-body-text text-[#5a4d3f]">Page</div>
               <div className="font-body-text text-[#5a4d3f]">Page</div>
               <Button className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow"
-              onClick={() => navigate("/signup")}>
+              onClick={() => navigate("/login")}>
                 Log In
               </Button>
             </div>
@@ -107,7 +107,7 @@ export default function LandingPage(): JSX.Element {
             </p>
           </div>
           <Button className="bg-[#5a4d3f] text-white px-8 py-5 rounded-lg shadow-button-shadow text-2xl"
-           onClick={() => navigate("/signup")}>
+           onClick={() => navigate("/register")}>
             Sign up today
           </Button>
         </section>

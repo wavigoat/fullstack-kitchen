@@ -59,7 +59,7 @@ export default function SignUp(): JSX.Element {
               <div className="items-2">
                 <div className="text-wrapper">Page</div>
                 <div className="text-wrapper">Page</div>
-                <button className="button" onClick={() => navigate('/signup')}>
+                <button className="button" onClick={() => navigate('/register')}>
                   <div className="text-wrapper-4">Sign Up</div>
                 </button>
               </div>

@@ -53,7 +53,7 @@ export default function LogIn(): JSX.Element {
               <div className="items-2">
                 <div className="text-wrapper">Page</div>
                 <div className="text-wrapper">Page</div>
-                <button className="button" onClick={() => navigate('/signup')}>
+                <button className="button" onClick={() => navigate('/register')}>
                   <div className="text-wrapper-4">Sign Up</div>
                 </button>
               </div>
@@ -129,7 +129,7 @@ export default function LogIn(): JSX.Element {
         </div>
       </div>
       <div className="form">
-        <div className="input">
+      <div className="input">
           <div className="text-wrapper-5">Username</div>
           <input
             className="label-wrapper"
