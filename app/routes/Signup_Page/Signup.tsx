@@ -19,6 +19,7 @@ export default function SignUp(): JSX.Element {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -32,13 +33,37 @@ export default function SignUp(): JSX.Element {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
-    console.log("Username:", username);
-    console.log("Password:", password);
-    console.log("Email:", email);
+  const handleSubmit = async () => { // UNTESTED
+    try {
+      setError("");
+      
+      const response = await fetch('http://localhost:3001/account/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          email,
+        }),
+      });
 
-    navigate("/profile");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed');
+      }
+
+      // Store the token in localStorage
+      localStorage.setItem('token', data.token);
+      
+      // Navigate to profile page on success
+      navigate("/profile");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed');
+      console.error('Registration error:', err);
+    }
   };
 
   return (
@@ -135,6 +160,7 @@ export default function SignUp(): JSX.Element {
         </div>
       </div>
       <div className="form">
+        {error && <div className="error" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
         <div className="input">
           <div className="text-wrapper-5">Username</div>
           <input
