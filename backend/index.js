@@ -5,6 +5,7 @@ const { MongoClient } = require('mongodb');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -14,6 +15,7 @@ const secret = process.env.SECRET;
 let db;
 
 app.use(express.json());
+app.use(cors());
 
 async function dbConnect(){
     let client = await MongoClient.connect(mongoUri)
@@ -90,7 +92,7 @@ app.post('/account/register', async (req, res) => {
     }
 })
 
-app.get('/account/login', async (req, res) => {
+app.post('/account/login', async (req, res) => {
     try{
         await dbInit();
         const accounts = await db.collection('accounts');

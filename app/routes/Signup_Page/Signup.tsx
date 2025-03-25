@@ -35,8 +35,7 @@ export default function SignUp(): JSX.Element {
 
   const handleSubmit = async () => { // UNTESTED
     try {
-      setError("");
-      
+
       const response = await fetch('http://localhost:3001/account/register', {
         method: 'POST',
         headers: {
@@ -51,15 +50,16 @@ export default function SignUp(): JSX.Element {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
+      if (response.ok) {
+        // Store the token in localStorage
+        localStorage.setItem('token', data.token);
+        // Navigate to profile page on success
+        navigate("/profile");
+        return;
       }
 
-      // Store the token in localStorage
-      localStorage.setItem('token', data.token);
-      
-      // Navigate to profile page on success
-      navigate("/profile");
+      setError(data.error);
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
       console.error('Registration error:', err);
