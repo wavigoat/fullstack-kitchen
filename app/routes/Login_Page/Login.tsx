@@ -16,23 +16,49 @@ export function meta({}: Route.MetaArgs) {
 
 export default function LogIn(): JSX.Element {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
-    console.log("Username:", username);
-    console.log("Password:", password);
+  const handleSubmit = async () => {
+    try {
 
-    navigate("/profile");
+      const response = await fetch('http://localhost:3001/account/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store the token in localStorage
+        localStorage.setItem('token', data.token);
+        // Navigate to profile page on success
+        navigate("/profile");
+        return;
+      }
+
+      setError(data.error);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed');
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -129,14 +155,15 @@ export default function LogIn(): JSX.Element {
         </div>
       </div>
       <div className="form">
-      <div className="input">
-          <div className="text-wrapper-5">Username</div>
+        {error && <div className="error" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
+        <div className="input">
+        <div className="text-wrapper-5">Email</div>
           <input
             className="label-wrapper"
-            placeholder="Enter your username"
+            placeholder="Enter your email"
             type="text"
-            value={username}
-            onChange={handleUsernameChange}
+            value={email}
+            onChange={handleEmailChange}
           />
         </div>
         <div className="input">
