@@ -1,12 +1,18 @@
+// Import necessary components, icons, and styles
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router";
 import type { JSX } from "react";
+import "../../style.css";
 
+
+// Define the LandingPage component
 export default function LandingPage(): JSX.Element {
   // Footer navigation data
+  const navigate = useNavigate();
   const footerNavigation = [
     {
       title: "Topic",
@@ -29,20 +35,20 @@ export default function LandingPage(): JSX.Element {
       title: "Recipe 1",
       description:
         "Body text for whatever you'd like to add more to the subheading.",
-      imageBg: "bg-[url(/image-2.png)]",
+      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-1.png)]",
     },
     {
       id: 2,
       title: "Recipe 2",
       description:
         "Body text for whatever you'd like to expand on the main point.",
-      imageBg: "bg-[url(/image-3.png)]",
+      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-2.png)]",
     },
     {
       id: 3,
       title: "Recipe 3",
       description: "Body text for whatever you'd like to share more.",
-      imageBg: "bg-[url(/image-4.png)]",
+      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-3.png)]",
     },
   ];
 
@@ -50,17 +56,17 @@ export default function LandingPage(): JSX.Element {
   const aboutSections = [
     {
       title: "Who Are We?",
-      content: "Body text for whatever you'd like to expand on the main point.",
+      content: "At FullStack Kitchen, we are a passionate team of developers dedicated to creating intuitive, accessible, and powerful solutions for culinary enthusiasts. Our app, FlavorShare, aims to revolutionize the way home cooks and food lovers organize, manage, and share their recipes. With a focus on simplicity and functionality, we are building a platform that enhances the cooking experience by providing an interactive and user-friendly recipe management system. Whether you’re storing a cherished family recipe or discovering new culinary inspirations, we strive to make cooking more enjoyable, efficient, and connected.",
     },
     {
       title: "Mission Statement",
       content:
-        "Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes.",
+        "Our mission is to empower home cooks, food enthusiasts, and culinary creators by providing a seamless, organized, and social platform to store, share, and discover recipes. We believe that great cooking should be made easy, and with FlavorShare, we are dedicated to turning recipes into something more than just instructions—they’re a way to connect, share, and inspire others in the kitchen.",
     },
     {
       title: "Subheading",
       content:
-        "Body text for whatever you'd like to add more to the main point. It provides details, explanations, and context.",
+        "Organize, Share, Discover—Your Recipes, Your Flavor.",
     },
   ];
 
@@ -78,18 +84,19 @@ export default function LandingPage(): JSX.Element {
         {/* Header */}
         <header className="w-full h-[164px] bg-collection-1-color-3">
           <div className="flex items-center justify-between px-20 py-14">
-            <div className="font-body-text text-[#5a4d3f]">FlavorShare</div>
+            <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/')}>FlavorShare</div>
             <div className="flex items-center gap-[var(--variable-collection-spacing-m)]">
-              <div className="font-body-text text-[#5a4d3f]">Page</div>
-              <div className="font-body-text text-[#5a4d3f]">Page</div>
-              <Button className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow">
+              <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/login')}>Create a Recipe</div>
+              <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/login')}>Search</div>
+              <Button className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow"
+              onClick={() => navigate("/login")}>
                 Log In
               </Button>
             </div>
           </div>
         </header>
 
-        {/* Hero Section */}
+        {/* Main Info Section */}
         <section className="flex flex-col w-[844px] items-start gap-10 pt-[212px] px-20">
           <div className="flex flex-col items-start gap-6 w-full">
             <h1 className="[font-family:'Inter-Bold',Helvetica] font-bold text-[#5a4d3f] text-[64px] tracking-[-1.28px] leading-[normal]">
@@ -100,13 +107,14 @@ export default function LandingPage(): JSX.Element {
               culinary enthusiasts to store, manage, and search for recipes
             </p>
           </div>
-          <Button className="bg-[#5a4d3f] text-white px-8 py-5 rounded-lg shadow-button-shadow text-2xl">
+          <Button className="bg-[#5a4d3f] text-white px-8 py-5 rounded-lg shadow-button-shadow text-2xl"
+           onClick={() => navigate("/register")}>
             Sign up today
           </Button>
         </section>
 
-        {/* Hero Image */}
-        <div className="w-[1280px] h-[640px] mt-[337px] mx-16 rounded-lg bg-[url(/hero-image.png)] bg-cover bg-[50%_50%]" />
+        {/* Main Image */}
+        <div className="w-[1280px] h-[640px] mt-[337px] mx-16 rounded-lg bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Hero%20Image.png)] bg-cover bg-[50%_50%]" />
 
         {/* Recent Recipes Section */}
         <section className="mt-[181px] px-20">
@@ -176,7 +184,7 @@ export default function LandingPage(): JSX.Element {
             </div>
           </div>
 
-          <div className="w-[704px] h-[704px] rounded-[8px_0px_0px_8px] bg-[url(/image.png)] bg-cover bg-[50%_50%]" />
+          <div className="w-[704px] h-[704px] rounded-[8px_0px_0px_8px] bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image.png)] bg-cover bg-[50%_50%]" />
         </section>
 
         {/* CTA Section */}

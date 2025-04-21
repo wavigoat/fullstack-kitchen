@@ -38,3 +38,10 @@
 # React Router
 /.react-router/
 /build/
+
+# Backend
+/backend/node_modules/
+
+/.idea/
+*.env
+backend/.env
