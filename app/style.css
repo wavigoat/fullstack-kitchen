@@ -45,7 +45,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .log-in .overlap-group {
@@ -126,7 +126,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .log-in .items-2 {
@@ -134,7 +134,7 @@ body {
   display: inline-flex;
   gap: var(--variable-collection-spacing-m);
   justify-content: flex-end;
-  left: 1071px;
+  left: 950px;
   position: absolute;
   top: 56px;
 }
@@ -159,7 +159,7 @@ body {
   left: 0;
   position: absolute;
   top: 1020px;
-  width: 1440px;
+  width: 100%;
 }
 
 .log-in .overlap {
@@ -306,7 +306,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .log-in .form {
@@ -446,7 +446,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .sign-in .overlap-group {
@@ -527,7 +527,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .sign-in .items-2 {
@@ -535,7 +535,7 @@ body {
   display: inline-flex;
   gap: var(--variable-collection-spacing-m);
   justify-content: flex-end;
-  left: 1071px;
+  left: 950px;
   position: absolute;
   top: 56px;
 }
@@ -560,7 +560,7 @@ body {
   left: 0;
   position: absolute;
   top: 1020px;
-  width: 1440px;
+  width: 100%;
 }
 
 .sign-in .overlap {
@@ -707,7 +707,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .sign-in .form {
@@ -957,7 +957,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .profile .overlap-group {
@@ -1037,7 +1037,7 @@ body {
   display: inline-flex;
   gap: var(--variable-collection-spacing-m);
   justify-content: flex-end;
-  left: 1071px;
+  left: 950px;
   position: absolute;
   top: 56px;
 }
@@ -1062,7 +1062,7 @@ body {
   left: 0;
   position: absolute;
   top: 1851px;
-  width: 1440px;
+  width: 100%;
 }
 
 .profile .items-3 {
@@ -1584,7 +1584,7 @@ body {
   left: -1px;
   position: absolute;
   top: 3339px;
-  width: 1440px;
+  width: 100%;
 }
 
 .recipe .items {
@@ -1818,7 +1818,7 @@ body {
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 .recipe .items-4 {
@@ -1826,7 +1826,7 @@ body {
   display: inline-flex;
   gap: var(--variable-collection-spacing-m);
   justify-content: flex-end;
-  left: 1071px;
+  left: 950px;
   position: absolute;
   top: 56px;
 }

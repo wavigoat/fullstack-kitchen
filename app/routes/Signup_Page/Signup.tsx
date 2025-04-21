@@ -1,3 +1,4 @@
+// Import necessary modules and assets
 import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router";
 import icon from "../../assets/icons/Icon.png";
@@ -14,8 +15,10 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+// Define the SignUp component
 export default function SignUp(): JSX.Element {
   const navigate = useNavigate();
+  // State for username, password, email, eorror input
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -67,23 +70,16 @@ export default function SignUp(): JSX.Element {
   };
 
   return (
+    // Main container for the signup page
     <div className="sign-in">
       <div className="div">
+      {/* Header section */}
         <div className="navigation">
           <div className="overlap-group">
-            <div className="items">
-              <div className="text-wrapper">Page</div>
-              <div className="text-wrapper">Page</div>
-              <div className="text-wrapper">Page</div>
-              <button className="button">
-                <div className="text-wrapper-2">Button</div>
-              </button>
-            </div>
-            <div className="text-wrapper-3">Site name</div>
             <div className="navigation-2">
               <div className="items-2">
-                <div className="text-wrapper">Page</div>
-                <div className="text-wrapper">Page</div>
+                <div className="text-wrapper" onClick={() => navigate('/login')}>Create a Recipe</div>
+                <div className="text-wrapper" onClick={() => navigate('/login')}>Search</div>
                 <button className="button" onClick={() => navigate('/register')}>
                   <div className="text-wrapper-4">Sign Up</div>
                 </button>
@@ -96,7 +92,7 @@ export default function SignUp(): JSX.Element {
           <div className="overlap">
             <div className="items-3">
               <div className="text-wrapper-5">Topic</div>
-              <div className="text-wrapper-6">Page</div>
+              <div className="text-wFrapper-6">Page</div>
               <div className="text-wrapper-6">Page</div>
               <div className="text-wrapper-6">Page</div>
             </div>
@@ -159,8 +155,11 @@ export default function SignUp(): JSX.Element {
           </div>
         </div>
       </div>
+      {/* Form section */}
       <div className="form">
+        {/* Display error message */}
         {error && <div className="error" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
+        {/* Inputs */}
         <div className="input">
           <div className="text-wrapper-5">Username</div>
           <input

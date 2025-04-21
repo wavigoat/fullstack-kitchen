@@ -1,14 +1,22 @@
+// Import necessary modules and assets
 import React, { type JSX } from "react";
+import { useNavigate } from "react-router";
 import icon from "../../assets/icons/Icon.png";
 import icon2 from "../../assets/icons/Icon-1.png";
 import icon3 from "../../assets/icons/Icon-2.png";
 import icon4 from "../../assets/icons/Icon-3.png";
 import "../../style.css";
 
+// Define the Recipe component
 export default function Recipe(): JSX.Element {
+    // Initialize navigation hook
+    const navigate = useNavigate();
     return (
+        // Main container for the recipe page
         <div className="recipe">
+            {/* Header section */}
             <div className="div">
+                {/* Related recipes section */}
                 <div className="text-wrapper">Related Recipes</div>
 
                 <div className="image" />
@@ -17,6 +25,7 @@ export default function Recipe(): JSX.Element {
 
                 <div className="image-3" />
 
+                {/* Recipe instructions section */}
                 <p className="paragraph">
                     Recipe Instructions
                     <br />
@@ -26,7 +35,7 @@ export default function Recipe(): JSX.Element {
                     <br />a<br />b<br />c<br />d<br />
                     maybe it would be good if users can add images of the steps?
                 </p>
-
+                {/* Ingredients section */}
                 <div className="overlap">
                     <p className="p">
                         Recipe Ingredients
@@ -61,6 +70,7 @@ export default function Recipe(): JSX.Element {
                     <div className="text-wrapper-6">Categories</div>
                 </div>
 
+                {/* Footer navigation */}
                 <div className="navigation-footer">
                     <div className="items">
                         <div className="text-wrapper-7">Topic</div>
@@ -122,7 +132,7 @@ export default function Recipe(): JSX.Element {
 
                     
                 </div>
-
+                {/* Cards for additional recipes */}
                 <div className="cards">
                     <div className="card">
                         <div className="image-5" />
@@ -157,12 +167,11 @@ export default function Recipe(): JSX.Element {
 
                 <div className="navigation">
                     <div className="items-4">
-                        <div className="text-wrapper-12">Page</div>
-
-                        <div className="text-wrapper-12">Page</div>
+                    <div className="text-wrapper-12" onClick={() => navigate('/recipe')}>Create a Recipe</div>
+                    <div className="text-wrapper-12" onClick={() => navigate('/search')}>Search</div>
 
                         <button className="button">
-                            <div className="text-wrapper-13">Log In</div>
+                            <div className="text-wrapper-13"onClick={() => navigate('/profile')}>Profile</div>
                         </button>
                     </div>
 

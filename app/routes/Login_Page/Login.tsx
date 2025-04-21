@@ -1,3 +1,4 @@
+// Import necessary modules and assets
 import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router";
 import icon from "../../assets/icons/Icon.png";
@@ -7,14 +8,16 @@ import icon4 from "../../assets/icons/Icon-3.png";
 import type { Route } from "../../../.react-router/types/app/routes/+types/home";
 import "../../style.css";
 
+// Define metadata for the login page
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Login Page" },
     { name: "login", content: "Login to your account!" },
   ];
 }
-
+// Define the LogIn component
 export default function LogIn(): JSX.Element {
+  // Initialize navigation hook + Inputs
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,6 +32,7 @@ export default function LogIn(): JSX.Element {
     setPassword(e.target.value);
   };
 
+  // Handle form submission
   const handleSubmit = async () => {
     try {
 
@@ -62,23 +66,16 @@ export default function LogIn(): JSX.Element {
   };
 
   return (
+    // Main container for the login page
     <div className="log-in">
       <div className="div">
+        {/* Header section */}
         <div className="navigation">
           <div className="overlap-group">
-            <div className="items">
-              <div className="text-wrapper">Page</div>
-              <div className="text-wrapper">Page</div>
-              <div className="text-wrapper">Page</div>
-              <button className="button">
-                <div className="text-wrapper-2">Button</div>
-              </button>
-            </div>
-            <div className="text-wrapper-3">Site name</div>
             <div className="navigation-2">
               <div className="items-2">
-                <div className="text-wrapper">Page</div>
-                <div className="text-wrapper">Page</div>
+              <div className="text-wrapper" onClick={() => navigate('/login')}>Create a Recipe</div>
+                <div className="text-wrapper" onClick={() => navigate('/login')}>Search</div>
                 <button className="button" onClick={() => navigate('/register')}>
                   <div className="text-wrapper-4">Sign Up</div>
                 </button>
@@ -154,8 +151,11 @@ export default function LogIn(): JSX.Element {
           </div>
         </div>
       </div>
+      {/* Form section */}
       <div className="form">
+        {/* Display error message */}
         {error && <div className="error" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
+        {/* Inputs */}
         <div className="input">
         <div className="text-wrapper-5">Email</div>
           <input

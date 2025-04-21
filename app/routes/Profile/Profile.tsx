@@ -1,18 +1,24 @@
+// Import necessary modules and assets
 import React, { type JSX } from "react";
+import { useNavigate } from "react-router";
 import icon from "../../assets/icons/Icon.png";
 import icon2 from "../../assets/icons/Icon-1.png";
 import icon3 from "../../assets/icons/Icon-2.png";
 import icon4 from "../../assets/icons/Icon-3.png";
 import "../../style.css";
 
+// Define the Profile component
 export default function Profile(): JSX.Element {
+    // Main container for the profile page
+    const navigate = useNavigate();
     return (
         <div className="profile">
+            {/* Profile section */}
             <div className="div">
                 <button className="button">
                     <div className="text-wrapper">Saved Recipes</div>
                 </button>
-
+                {/* Section for user's recipes */}
                 <div className="text-wrapper-2">My Recipes</div>
 
                 <div className="copy">
@@ -38,31 +44,19 @@ export default function Profile(): JSX.Element {
                 </div>
 
                 <div className="image" />
-
+                {/* Header section */}
                 <div className="navigation">
                     <div className="overlap-group">
-                        <div className="items">
-                            <div className="text-wrapper-3">Page</div>
-
-                            <div className="text-wrapper-3">Page</div>
-
-                            <div className="text-wrapper-3">Page</div>
-
-                            <button className="div-wrapper">
-                                <div className="text-wrapper-4">Button</div>
-                            </button>
-                        </div>
-
-                        <div className="text-wrapper-5">Site name</div>
+                        
 
                         <div className="navigation">
                             <div className="items-2">
-                                <div className="text-wrapper-3">Page</div>
+                                <div className="text-wrapper-3" onClick={() => navigate('/recipe')}>Create a Recipe</div>
 
-                                <div className="text-wrapper-3">Page</div>
+                                <div className="text-wrapper-3" onClick={() => navigate('/search')}>Search</div>
 
                                 <button className="div-wrapper">
-                                    <div className="text-wrapper-6">Log In</div>
+                                    <div className="text-wrapper-6" onClick={() => navigate('/profile')}>Profile</div>
                                 </button>
                             </div>
 
@@ -70,7 +64,7 @@ export default function Profile(): JSX.Element {
                         </div>
                     </div>
                 </div>
-
+                {/* Footer section */}
                 <div className="navigation-footer">
                     <div className="items-3">
                         <div className="text-wrapper-7">Topic</div>
@@ -131,7 +125,8 @@ export default function Profile(): JSX.Element {
                     </div>
 
                 </div>
-
+                
+                {/* Grid of recipe cards */}
                 <div className="card-grid">
                     <div className="card">
                         <div className="image-2" />

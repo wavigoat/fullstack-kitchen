@@ -60,9 +60,9 @@ export default function Search(): JSX.Element {
         <div className="flex items-center gap-6">
           <button 
             className="bg-[#5a4d3f] text-white px-4 py-2 rounded-lg"
-            onClick={() => navigate('/register')}
+            onClick={() => navigate('/profile')}
           >
-            Sign Up
+            Profile
           </button>
         </div>
       </nav>
