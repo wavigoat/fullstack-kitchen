@@ -7,7 +7,6 @@ import icon3 from "../../assets/icons/Icon-2.png";
 import icon4 from "../../assets/icons/Icon-3.png";
 import "../../style.css";
 
-// Define the Profile component
 export default function Profile(): JSX.Element {
     const navigate = useNavigate();
     const [profile, setProfile] = useState({
@@ -19,7 +18,6 @@ export default function Profile(): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
     const [error, setError] = useState("");
 
-    // Fetch profile data on component mount
     useEffect(() => {
         fetchProfile();
     }, []);
@@ -57,7 +55,6 @@ export default function Profile(): JSX.Element {
                 return;
             }
 
-            // Ensure we're only sending the fields the backend expects
             const updateData = {
                 name: profile.name,
                 bio: profile.bio,
@@ -73,15 +70,12 @@ export default function Profile(): JSX.Element {
                 body: JSON.stringify(updateData)
             });
 
-            // Check if the response is ok (status 200-299)
             if (response.ok) {
-                setIsEditing(false);
                 setError("");
-                // Refresh the profile data
                 await fetchProfile();
             } else {
-                // Try to get error message from response
                 const errorData = await response.json().catch(() => ({}));
+                setIsEditing(false);
                 throw new Error(errorData.error || 'Failed to update profile');
             }
         } catch (err) {
@@ -139,7 +133,10 @@ export default function Profile(): JSX.Element {
                                 className="label-wrapper"
                                 style={{ marginBottom: '1rem' }}
                             />
-                            <button className="div-wrapper" onClick={handleUpdateProfile}>
+                            <button className="div-wrapper" onClick={() => {
+                                handleUpdateProfile();
+                                setIsEditing(false);
+                            }}>
                                 <div className="text-wrapper-6">Save Changes</div>
                             </button>
                         </>
