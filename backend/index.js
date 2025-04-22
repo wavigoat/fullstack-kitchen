@@ -192,7 +192,116 @@ app.post('/account/update', jwtAuth, async (req, res) => {
 })
 
 app.post('/recipe/new', jwtAuth, async (req, res) => {
+    try{
+        await dbInit();
+        const accounts = await db.collection('accounts');
+        const recipes = await db.collection('recipes');
 
+        let account = await accounts.findOne({$and:[{_id:req.user._id}, {username:req.user.username}]});
+        if(!account){
+            res.status(400).json({error: "Account does not exist"})
+        }
+
+        let newData = req.body;
+
+        if(newData === undefined){
+            res.status(400).json({})
+            return;
+        }
+
+        if(newData.name === undefined){
+            res.status(400).json({error: "Missing recipe name"})
+            return;
+        }
+        if(newData.description === undefined){
+            res.status(400).json({error: "Missing recipe description"})
+            return;
+        }
+
+        let uuid = crypto.randomUUID();
+        let newRecipe = {
+            _id: uuid,
+            name: newData.name,
+            description: newData.description,
+            owner: account._id,
+            createdAt: new Date(),
+        }
+        await recipes.insertOne(newRecipe);
+
+        res.status(200).json({uuid});
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ error: '500 Internal Server Error' });
+    }
+})
+
+app.get('/recipe/get/:id', async (req, res) => {
+    try{
+        await dbInit();
+        const recipes = await db.collection('recipes');
+        let id = req.params.id;
+        if(id === undefined){
+            res.status(400).json({})
+            return;
+        }
+        let recipe = await recipes.findOne({_id:id});
+        if(!recipe){
+            res.status(400).json({error: "Recipe does not exist"})
+            return
+        }
+
+        res.status(200).json({recipe});
+
+    }catch{
+        res.status(500).json({ error: '500 Internal Server Error' });
+    }
+})
+
+app.get('/recipe/getall/:id', async (req, res) => {
+    try{
+        await dbInit();
+        const recipes = await db.collection('recipes');
+
+        let id = req.params.id;
+        if(id === undefined){
+            res.status(400).json({})
+            return;
+        }
+        let recipe = await recipes.findAll({owner:id});
+        if(!recipe || recipe.length === 0){
+            res.status(400).json({error: "No recipes found"})
+            return
+        }
+
+        res.status(200).json({recipe});
+
+    }catch{
+        res.status(500).json({ error: '500 Internal Server Error' });
+    }
+})
+
+app.get('/recipe/popular', async (req, res) => {
+    try{
+        await dbInit();
+        const recipes = await db.collection('recipes');
+
+        let id = req.params.id;
+        if(id === undefined){
+            res.status(400).json({})
+            return;
+        }
+        let recipe = await recipes.findAll({owner:id});
+        if(!recipe || recipe.length === 0){
+            res.status(400).json({error: "No recipes found"})
+            return
+        }
+
+        res.status(200).json({recipe});
+
+    }catch{
+        res.status(500).json({ error: '500 Internal Server Error' });
+    }
 })
 
 app.listen(port, async () => {
