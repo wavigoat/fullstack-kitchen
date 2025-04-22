@@ -155,7 +155,7 @@ app.get('/account/info', jwtAuth, async (req, res) => {
     }
 })
 
-app.post('/account/update', async (req, res) => {
+app.post('/account/update', jwtAuth, async (req, res) => {
     try{
         await dbInit();
         const accounts = await db.collection('accounts');
@@ -185,9 +185,14 @@ app.post('/account/update', async (req, res) => {
 
         res.status(200);
 
-    }catch{
+    }catch(error){
+        console.log(error);
         res.status(500).json({ error: '500 Internal Server Error' });
     }
+})
+
+app.post('/recipe/new', jwtAuth, async (req, res) => {
+
 })
 
 app.listen(port, async () => {
