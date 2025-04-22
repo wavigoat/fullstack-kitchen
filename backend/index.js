@@ -155,6 +155,41 @@ app.get('/account/info', jwtAuth, async (req, res) => {
     }
 })
 
+app.post('/account/update', async (req, res) => {
+    try{
+        await dbInit();
+        const accounts = await db.collection('accounts');
+
+        let account = await accounts.findOne({$and:[{_id:req.user._id}, {username:req.user.username}]});
+        if(!account){
+            res.status(400).json({error: "Account does not exist"})
+        }
+
+        let newData = req.body;
+
+        if(newData === undefined){
+            res.status(400).json({})
+            return;
+        }
+        if(newData.bio !== undefined){
+            account.bio = newData.bio;
+        }
+        if(newData.name !== undefined){
+            account.name = newData.name;
+        }
+        if(newData.image !== undefined){
+            account.image = newData.image;
+        }
+
+        accounts.updateOne({_id:req.user._id}, {$set : account });
+
+        res.status(200);
+
+    }catch{
+        res.status(500).json({ error: '500 Internal Server Error' });
+    }
+})
+
 app.listen(port, async () => {
     if(db === undefined){
         await dbConnect();
