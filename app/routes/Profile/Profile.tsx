@@ -96,7 +96,7 @@ export default function Profile(): JSX.Element {
         <div className="profile">
             {/* Profile section */}
             <div className="div">
-                <button className="button">
+                <button className="button" onClick={() => navigate('/saved-recipes')}>
                     <div className="text-wrapper">Saved Recipes</div>
                 </button>
                 {/* Section for user's recipes */}
