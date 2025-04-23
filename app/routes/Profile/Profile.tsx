@@ -1,4 +1,3 @@
-// Import necessary modules and assets
 import React, { type JSX, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import icon from "../../assets/icons/Icon.png";
