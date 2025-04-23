@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const cors = require('cors');
+const fuse = require('fuse.js');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -224,6 +225,7 @@ app.post('/recipe/new', jwtAuth, async (req, res) => {
             name: newData.name,
             description: newData.description,
             owner: account._id,
+            likes: 0,
             createdAt: new Date(),
         }
         await recipes.insertOne(newRecipe);
@@ -268,7 +270,7 @@ app.get('/recipe/getall/:id', async (req, res) => {
             res.status(400).json({})
             return;
         }
-        let recipe = await recipes.findAll({owner:id});
+        let recipe = await recipes.find({owner:id}).toArray();
         if(!recipe || recipe.length === 0){
             res.status(400).json({error: "No recipes found"})
             return
@@ -282,27 +284,61 @@ app.get('/recipe/getall/:id', async (req, res) => {
 })
 
 app.get('/recipe/popular', async (req, res) => {
-    try{
+    try {
         await dbInit();
         const recipes = await db.collection('recipes');
 
-        let id = req.params.id;
-        if(id === undefined){
-            res.status(400).json({})
-            return;
-        }
-        let recipe = await recipes.findAll({owner:id});
-        if(!recipe || recipe.length === 0){
-            res.status(400).json({error: "No recipes found"})
-            return
-        }
+        let page = parseInt(req.query.page) || 0;
+        if (page < 0) page = 0;
 
-        res.status(200).json({recipe});
+        const pageSize = 10;
+        const skipCount = page * pageSize;
 
-    }catch{
+        const popularRecipes = await recipes.find({})
+            .sort({ likes: -1 })
+            .skip(skipCount)
+            .limit(pageSize)
+            .toArray();
+
+        res.status(200).json({ recipes: popularRecipes });
+    } catch (err) {
+        console.error(err);
         res.status(500).json({ error: '500 Internal Server Error' });
     }
-})
+});
+
+app.get('/recipe/search/:name', async (req, res) => {
+    try {
+        await dbInit();
+        const recipes = await db.collection('recipes');
+
+        const name = req.params.name;
+        if (!name) {
+            res.status(400).json({ error: 'Missing search term' });
+            return;
+        }
+
+        const page = parseInt(req.query.page) || 0;
+        const pageSize = 10;
+
+        const allRecipes = await recipes.find({}).toArray();
+
+        const fuseSearch = new fuse(allRecipes, {
+            keys: ['name', 'description'],
+            threshold: 0.4
+        });
+
+        const fuzzyResults = fuseSearch.search(name);
+
+        const start = page * pageSize;
+        const pagedResults = fuzzyResults.slice(start, start + pageSize).map(result => result.item);
+
+        res.status(200).json({ results: pagedResults });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: '500 Internal Server Error' });
+    }
+});
 
 app.listen(port, async () => {
     if(db === undefined){
