@@ -50,21 +50,6 @@ export default function LandingPage(): JSX.Element {
     }
   };
 
-  const footerNavigation = [
-    {
-      title: "Topic",
-      links: ["Page", "Page", "Page"],
-    },
-    {
-      title: "Topic",
-      links: ["Page", "Page", "Page"],
-    },
-    {
-      title: "Topic",
-      links: ["Page", "Page", "Page"],
-    },
-  ];
-
   const aboutSections = [
     {
       title: "Who Are We?",
@@ -76,7 +61,7 @@ export default function LandingPage(): JSX.Element {
         "Our mission is to empower home cooks, food enthusiasts, and culinary creators by providing a seamless, organized, and social platform to store, share, and discover recipes. We believe that great cooking should be made easy, and with FlavorShare, we are dedicated to turning recipes into something more than just instructions—they're a way to connect, share, and inspire others in the kitchen.",
     },
     {
-      title: "Subheading",
+      title: "",
       content:
         "Organize, Share, Discover—Your Recipes, Your Flavor.",
     },
@@ -172,12 +157,12 @@ export default function LandingPage(): JSX.Element {
 
         {/* About Us Section */}
         <section className="mt-[246px] px-20 flex">
-          <div className="w-[624px]">
-            <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal] mb-[107px]">
+          <div className="w-[624px] pr-16">
+            <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal] mb-12">
               About Us
             </h2>
 
-            <div className="flex flex-col w-[516px] gap-12 ml-[59px]">
+            <div className="flex flex-col w-full gap-12">
               {aboutSections.map((section, index) => (
                 <div
                   key={index}
@@ -191,37 +176,10 @@ export default function LandingPage(): JSX.Element {
                   </p>
                 </div>
               ))}
-
-              <div className="flex items-center gap-4 mt-[107px]">
-                <Button className="bg-[#5a4d3f] text-white px-6 py-3 rounded-lg shadow-button-shadow">
-                  Button
-                </Button>
-                <Button
-                  variant="outline"
-                  className="bg-[#e6e6e6] text-[#5a4d3f] px-6 py-3 rounded-lg shadow-button-shadow"
-                >
-                  Secondary button
-                </Button>
-              </div>
             </div>
           </div>
 
           <div className="w-[704px] h-[704px] rounded-[8px_0px_0px_8px] bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image.png)] bg-cover bg-[50%_50%]" />
-        </section>
-
-        {/* CTA Section */}
-        <section className="mt-[269px] w-full h-[236px] bg-collection-1-color-4 flex items-center justify-between px-20">
-          <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal]">
-            Section heading
-          </h2>
-          <div className="flex items-center gap-6">
-            <Button className="bg-[#5a4d3f] text-white px-8 py-5 rounded-lg shadow-button-shadow text-2xl">
-              Button
-            </Button>
-            <Button className="bg-[#b38d53] text-[color:var(--colors-text-text-default)] px-8 py-5 rounded-lg shadow-button-shadow text-2xl">
-              Secondary button
-            </Button>
-          </div>
         </section>
 
         {/* Footer */}
@@ -244,27 +202,6 @@ export default function LandingPage(): JSX.Element {
                   >
                     <div className="w-6 h-6">{social.icon}</div>
                   </Button>
-                ))}
-              </div>
-
-              <div className="flex gap-[32px]">
-                {footerNavigation.map((column, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col w-[187px] items-end gap-[var(--variable-collection-spacing-s)]"
-                  >
-                    <div className="font-small-text text-[#5a4d3f]">
-                      {column.title}
-                    </div>
-                    {column.links.map((link, linkIndex) => (
-                      <div
-                        key={linkIndex}
-                        className="font-small-text text-[#555555]"
-                      >
-                        {link}
-                      </div>
-                    ))}
-                  </div>
                 ))}
               </div>
             </div>
