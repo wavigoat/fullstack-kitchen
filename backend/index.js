@@ -172,17 +172,13 @@ app.post('/account/update', jwtAuth, async (req, res) => {
             res.status(400).json({})
             return;
         }
-        if(newData.bio !== undefined){
-            account.bio = newData.bio;
-        }
-        if(newData.name !== undefined){
-            account.name = newData.name;
-        }
-        if(newData.image !== undefined){
-            account.image = newData.image;
-        }
 
-        accounts.updateOne({_id:req.user._id}, {$set : account });
+        let updateFields = {};
+        if (newData.bio !== undefined) updateFields.bio = newData.bio;
+        if (newData.name !== undefined) updateFields.name = newData.name;
+        if (newData.image !== undefined) updateFields.image = newData.image;
+
+        await accounts.updateOne({ _id: req.user._id }, { $set: updateFields });
 
         res.status(200);
 
