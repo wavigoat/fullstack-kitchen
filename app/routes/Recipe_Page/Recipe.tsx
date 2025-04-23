@@ -1,183 +1,145 @@
-// Import necessary modules and assets
-import React, { type JSX } from "react";
+import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router";
-import icon from "../../assets/icons/Icon.png";
-import icon2 from "../../assets/icons/Icon-1.png";
-import icon3 from "../../assets/icons/Icon-2.png";
-import icon4 from "../../assets/icons/Icon-3.png";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
 import "../../style.css";
 
-// Define the Recipe component
 export default function Recipe(): JSX.Element {
-    // Initialize navigation hook
-    const navigate = useNavigate();
-    return (
-        // Main container for the recipe page
-        <div className="recipe">
-            {/* Header section */}
-            <div className="div">
-                {/* Related recipes section */}
-                <div className="text-wrapper">Related Recipes</div>
+  const navigate = useNavigate();
+  const [recipeName, setRecipeName] = useState("");
+  const [recipeDescription, setRecipeDescription] = useState("");
+  const [isPublicRecipe, setIsPublicRecipe] = useState(true);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-                <div className="image" />
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-                <div className="image-2" />
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError("Please log in to create a recipe");
+      setIsLoading(false);
+      return;
+    }
 
-                <div className="image-3" />
+    try {
+      const response = await fetch('http://localhost:3001/recipe/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: recipeName,
+          description: recipeDescription,
+          public: isPublicRecipe
+        })
+      });
 
-                {/* Recipe instructions section */}
-                <p className="paragraph">
-                    Recipe Instructions
-                    <br />
-                    Formatted as a step by step
-                    <br />
-                    Users can add notes like this
-                    <br />a<br />b<br />c<br />d<br />
-                    maybe it would be good if users can add images of the steps?
-                </p>
-                {/* Ingredients section */}
-                <div className="overlap">
-                    <p className="p">
-                        Recipe Ingredients
-                        <br />
-                        bulleted list of ingredients
-                        <br />
-                        should have measurements
-                        <br />
-                        maybe could have potential substitutes like this
-                        <br />
-                        idk what else to put
-                        <br />a<br />b<br />c
-                    </p>
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create recipe');
+      }
 
-                    <div className="overlap-group">
-                        <div className="image-4" />
+      const data = await response.json();
+      navigate(`/recipe/${data.uuid}`);
+    } catch (error) {
+      console.error('Error creating recipe:', error);
+      setError(error instanceof Error ? error.message : 'Failed to create recipe');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-                        <div className="article-title">
-                            <div className="text-wrapper-2">Recipe Name</div>
-                        </div>
-                    </div>
-
-                    <p className="text-wrapper-3">
-                        A brief description of the recipe, with a word limit to keep
-                        concise.
-                    </p>
-
-                    <div className="text-wrapper-4">Cook Time:</div>
-
-                    <div className="text-wrapper-5">Author Name</div>
-
-                    <div className="text-wrapper-6">Categories</div>
-                </div>
-
-                {/* Footer navigation */}
-                <div className="navigation-footer">
-                    <div className="items">
-                        <div className="text-wrapper-7">Topic</div>
-
-                        <div className="text-wrapper-8">Page</div>
-
-                        <div className="text-wrapper-8">Page</div>
-
-                        <div className="text-wrapper-8">Page</div>
-                    </div>
-
-                    <div className="items-2">
-                        <div className="text-wrapper-7">Topic</div>
-
-                        <div className="text-wrapper-8">Page</div>
-
-                        <div className="text-wrapper-8">Page</div>
-
-                        <div className="text-wrapper-8">Page</div>
-                    </div>
-
-                    <div className="items-3">
-                        <div className="text-wrapper-7">Topic</div>
-
-                        <div className="text-wrapper-8">Page</div>
-
-                        <div className="text-wrapper-8">Page</div>
-
-                        <div className="text-wrapper-8">Page</div>
-                    </div>
-
-                    <div className="text-wrapper-9">Site name</div>
-
-                    <div className="social-icons">
-                        <div className="buttons-icon">
-                            <div className="icon">
-                                <img className="img" alt="Icon" src={icon} />
-                            </div>
-                        </div>
-
-                        <div className="buttons-icon">
-                            <div className="icon">
-                                <img className="icon-2" alt="Icon" src={icon4} />
-                            </div>
-                        </div>
-
-                        <div className="buttons-icon">
-                            <div className="icon">
-                                <img className="icon-3" alt="Icon" src={icon2} />
-                            </div>
-                        </div>
-
-                        <div className="buttons-icon">
-                            <div className="icon">
-                                <img className="img" alt="Icon" src={icon3} />
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                </div>
-                {/* Cards for additional recipes */}
-                <div className="cards">
-                    <div className="card">
-                        <div className="image-5" />
-
-                        <div className="copy">
-                            <div className="text-wrapper-10">Recipe 1</div>
-
-                            <div className="text-wrapper-11">Short Description</div>
-                        </div>
-                    </div>
-
-                    <div className="card-2">
-                        <div className="image-6" />
-
-                        <div className="copy">
-                            <div className="text-wrapper-10">Recipe 2</div>
-
-                            <div className="text-wrapper-11">Short Description</div>
-                        </div>
-                    </div>
-
-                    <div className="card-2">
-                        <div className="image-6" />
-
-                        <div className="copy">
-                            <div className="text-wrapper-10">Recipe 3</div>
-
-                            <div className="text-wrapper-11">Short Description</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="navigation">
-                    <div className="items-4">
-                    <div className="text-wrapper-12" onClick={() => navigate('/recipe')}>Create a Recipe</div>
-                    <div className="text-wrapper-12" onClick={() => navigate('/search')}>Search</div>
-
-                        <button className="button">
-                            <div className="text-wrapper-13"onClick={() => navigate('/profile')}>Profile</div>
-                        </button>
-                    </div>
-
-                    <div className="text-wrapper-14">FlavorShare</div>
-                </div>
-            </div>
+  return (
+    <div className="min-h-screen bg-[#e6d8cc]">
+      {/* Navigation Header */}
+      <nav className="bg-[#e6d8cc] p-4 flex justify-between items-center">
+        <div className="text-[#5a4d3f] text-xl cursor-pointer" onClick={() => navigate('/')}>
+          FlavorShare
         </div>
-    );
-};
+        <div className="flex items-center gap-6">
+          <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/recipe')}>
+            Create a Recipe
+          </div>
+          <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/search')}>
+            Search
+          </div>
+          <Button
+            variant="default"
+            className="bg-[#5a4d3f] text-white"
+            onClick={() => navigate('/profile')}
+          >
+            Profile
+          </Button>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        <div className="flex flex-col items-center">
+          <h1 className="text-4xl font-bold text-[#5a4d3f] mb-8">Create New Recipe</h1>
+          {error && (
+            <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+              {error}
+            </div>
+          )}
+          <Card className="w-full max-w-2xl">
+            <CardContent className="p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="recipeName" className="block text-[#5a4d3f] font-medium mb-2">
+                    Recipe Name
+                  </label>
+                  <input
+                    type="text"
+                    id="recipeName"
+                    value={recipeName}
+                    onChange={(e) => setRecipeName(e.target.value)}
+                    required
+                    className="w-full p-3 border-2 border-[#5a4d3f] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5a4d3f] text-[#5a4d3f]"
+                    placeholder="Enter recipe name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="recipeDescription" className="block text-[#5a4d3f] font-medium mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    id="recipeDescription"
+                    value={recipeDescription}
+                    onChange={(e) => setRecipeDescription(e.target.value)}
+                    required
+                    className="w-full p-3 border-2 border-[#5a4d3f] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5a4d3f] min-h-[150px] text-[#5a4d3f]"
+                    placeholder="Enter recipe description"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="isPublic"
+                    checked={isPublicRecipe}
+                    onChange={(e) => { setIsPublicRecipe(e.target.checked) }}
+                    className="h-4 w-4 text-[#5a4d3f] border-2 border-[#5a4d3f] rounded focus:ring-[#5a4d3f]"
+                  />
+                  <label htmlFor="isPublic" className="text-[#5a4d3f]">
+                    Make recipe public
+                  </label>
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full bg-[#5a4d3f] text-white hover:bg-[#4a3d2f] transition-colors"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating..." : "Create Recipe"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    </div>
+  );
+}

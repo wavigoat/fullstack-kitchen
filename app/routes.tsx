@@ -14,5 +14,7 @@ export default [
     route("register","./routes/Signup_Page/Signup.tsx"),
     route("profile","./routes/Profile/Profile.tsx"),
     route("search","./routes/Search_Page/Search.tsx"),
-    route("recipe","./routes/Recipe_Page/Recipe.tsx")
+    route("recipe","./routes/Recipe_Page/Recipe.tsx"),
+    route("recipe/:id","./routes/Recipe_Page/ViewRecipe.tsx"),
+    route("saved-recipes","./routes/Saved_Recipes/SavedRecipes.tsx")
 ] satisfies RouteConfig;

@@ -1,76 +1,72 @@
-// Import necessary components, icons, and styles
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import type { JSX } from "react";
 import "../../style.css";
 
+interface Recipe {
+  _id: string;
+  name: string;
+  description: string;
+  likes: number;
+  createdAt: string;
+}
 
-// Define the LandingPage component
 export default function LandingPage(): JSX.Element {
-  // Footer navigation data
   const navigate = useNavigate();
-  const footerNavigation = [
-    {
-      title: "Topic",
-      links: ["Page", "Page", "Page"],
-    },
-    {
-      title: "Topic",
-      links: ["Page", "Page", "Page"],
-    },
-    {
-      title: "Topic",
-      links: ["Page", "Page", "Page"],
-    },
-  ];
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [popularRecipes, setPopularRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Recent recipes data
-  const recentRecipes = [
-    {
-      id: 1,
-      title: "Recipe 1",
-      description:
-        "Body text for whatever you'd like to add more to the subheading.",
-      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-1.png)]",
-    },
-    {
-      id: 2,
-      title: "Recipe 2",
-      description:
-        "Body text for whatever you'd like to expand on the main point.",
-      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-2.png)]",
-    },
-    {
-      id: 3,
-      title: "Recipe 3",
-      description: "Body text for whatever you'd like to share more.",
-      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-3.png)]",
-    },
-  ];
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(token !== null);
+    fetchPopularRecipes();
+  }, []);
 
-  // About us sections data
+  const fetchPopularRecipes = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/recipe/popular');
+      const data = await response.json();
+      if (data.recipes) {
+        setPopularRecipes(data.recipes);
+      }
+    } catch (error) {
+      console.error('Error fetching popular recipes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const checkAuthAndNavigate = (path: string) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    } else {
+      navigate(path);
+    }
+  };
+
   const aboutSections = [
     {
       title: "Who Are We?",
-      content: "At FullStack Kitchen, we are a passionate team of developers dedicated to creating intuitive, accessible, and powerful solutions for culinary enthusiasts. Our app, FlavorShare, aims to revolutionize the way home cooks and food lovers organize, manage, and share their recipes. With a focus on simplicity and functionality, we are building a platform that enhances the cooking experience by providing an interactive and user-friendly recipe management system. Whether you’re storing a cherished family recipe or discovering new culinary inspirations, we strive to make cooking more enjoyable, efficient, and connected.",
+      content: "At FullStack Kitchen, we are a passionate team of developers dedicated to creating intuitive, accessible, and powerful solutions for culinary enthusiasts. Our app, FlavorShare, aims to revolutionize the way home cooks and food lovers organize, manage, and share their recipes. With a focus on simplicity and functionality, we are building a platform that enhances the cooking experience by providing an interactive and user-friendly recipe management system. Whether you're storing a cherished family recipe or discovering new culinary inspirations, we strive to make cooking more enjoyable, efficient, and connected.",
     },
     {
       title: "Mission Statement",
       content:
-        "Our mission is to empower home cooks, food enthusiasts, and culinary creators by providing a seamless, organized, and social platform to store, share, and discover recipes. We believe that great cooking should be made easy, and with FlavorShare, we are dedicated to turning recipes into something more than just instructions—they’re a way to connect, share, and inspire others in the kitchen.",
+        "Our mission is to empower home cooks, food enthusiasts, and culinary creators by providing a seamless, organized, and social platform to store, share, and discover recipes. We believe that great cooking should be made easy, and with FlavorShare, we are dedicated to turning recipes into something more than just instructions—they're a way to connect, share, and inspire others in the kitchen.",
     },
     {
-      title: "Subheading",
+      title: "",
       content:
         "Organize, Share, Discover—Your Recipes, Your Flavor.",
     },
   ];
 
-  // Social media icons
   const socialIcons = [
     { icon: <Facebook className="w-5 h-5" />, alt: "Facebook" },
     { icon: <Twitter className="w-5 h-5" />, alt: "Twitter" },
@@ -86,11 +82,13 @@ export default function LandingPage(): JSX.Element {
           <div className="flex items-center justify-between px-20 py-14">
             <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/')}>FlavorShare</div>
             <div className="flex items-center gap-[var(--variable-collection-spacing-m)]">
-              <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/login')}>Create a Recipe</div>
-              <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/login')}>Search</div>
-              <Button className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow"
-              onClick={() => navigate("/login")}>
-                Log In
+              <div className="font-body-text text-[#5a4d3f] cursor-pointer" onClick={() => checkAuthAndNavigate('/recipe')}>Create a Recipe</div>
+              <div className="font-body-text text-[#5a4d3f] cursor-pointer" onClick={() => checkAuthAndNavigate('/search')}>Search</div>
+              <Button 
+                className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow cursor-pointer"
+                onClick={() => isAuthenticated ? navigate('/profile') : navigate('/login')}
+              >
+                {isAuthenticated ? 'Profile' : 'Log In'}
               </Button>
             </div>
           </div>
@@ -116,46 +114,55 @@ export default function LandingPage(): JSX.Element {
         {/* Main Image */}
         <div className="w-[1280px] h-[640px] mt-[337px] mx-16 rounded-lg bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Hero%20Image.png)] bg-cover bg-[50%_50%]" />
 
-        {/* Recent Recipes Section */}
+        {/* Popular Recipes Section */}
         <section className="mt-[181px] px-20">
           <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal] mb-[107px]">
-            Recent Recipes
+            Popular Recipes
           </h2>
 
-          <div className="flex items-center gap-8">
-            {recentRecipes.map((recipe) => (
-              <Card
-                key={recipe.id}
-                className="flex-1 bg-transparent border-none"
-              >
-                <CardContent className="p-0">
-                  <div className="flex flex-col items-start gap-6">
-                    <div
-                      className={`w-full h-[405px] rounded-lg ${recipe.imageBg} bg-cover bg-[50%_50%]`}
-                    />
-                    <div className="flex flex-col w-full items-start justify-center gap-1">
-                      <h3 className="[font-family:'Inter-Medium',Helvetica] font-medium text-[#5a4d3f] text-2xl tracking-[0] leading-9">
-                        {recipe.title}
-                      </h3>
-                      <p className="[font-family:'Inter-Regular',Helvetica] font-normal text-[#5f403b] text-2xl tracking-[0] leading-9">
-                        {recipe.description}
-                      </p>
+          {loading ? (
+            <div className="flex justify-center items-center h-[405px]">
+              <p className="text-[#5a4d3f] text-xl">Loading recipes...</p>
+            </div>
+          ) : popularRecipes.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {popularRecipes.map((recipe) => (
+                <div 
+                  key={recipe._id} 
+                  className="bg-white rounded-lg shadow-md overflow-hidden"
+                >
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold text-[#5a4d3f]">{recipe.name}</h3>
+                    <p className="text-gray-600 mt-2">{recipe.description}</p>
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-[#5a4d3f]">❤️ {recipe.likes}</span>
+                      <button 
+                        className="bg-[#5a4d3f] text-white px-4 py-2 rounded-lg cursor-pointer"
+                        onClick={() => navigate(`/recipe/${recipe._id}`)}
+                      >
+                        View Recipe
+                      </button>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-[405px]">
+              <p className="text-[#5a4d3f] text-xl">No popular recipes found</p>
+            </div>
+          )}
         </section>
 
         {/* About Us Section */}
         <section className="mt-[246px] px-20 flex">
-          <div className="w-[624px]">
-            <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal] mb-[107px]">
+          <div className="w-[624px] pr-16">
+            <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal] mb-12">
               About Us
             </h2>
 
-            <div className="flex flex-col w-[516px] gap-12 ml-[59px]">
+            <div className="flex flex-col w-full gap-12">
               {aboutSections.map((section, index) => (
                 <div
                   key={index}
@@ -169,37 +176,10 @@ export default function LandingPage(): JSX.Element {
                   </p>
                 </div>
               ))}
-
-              <div className="flex items-center gap-4 mt-[107px]">
-                <Button className="bg-[#5a4d3f] text-white px-6 py-3 rounded-lg shadow-button-shadow">
-                  Button
-                </Button>
-                <Button
-                  variant="outline"
-                  className="bg-[#e6e6e6] text-[#5a4d3f] px-6 py-3 rounded-lg shadow-button-shadow"
-                >
-                  Secondary button
-                </Button>
-              </div>
             </div>
           </div>
 
           <div className="w-[704px] h-[704px] rounded-[8px_0px_0px_8px] bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image.png)] bg-cover bg-[50%_50%]" />
-        </section>
-
-        {/* CTA Section */}
-        <section className="mt-[269px] w-full h-[236px] bg-collection-1-color-4 flex items-center justify-between px-20">
-          <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal]">
-            Section heading
-          </h2>
-          <div className="flex items-center gap-6">
-            <Button className="bg-[#5a4d3f] text-white px-8 py-5 rounded-lg shadow-button-shadow text-2xl">
-              Button
-            </Button>
-            <Button className="bg-[#b38d53] text-[color:var(--colors-text-text-default)] px-8 py-5 rounded-lg shadow-button-shadow text-2xl">
-              Secondary button
-            </Button>
-          </div>
         </section>
 
         {/* Footer */}
@@ -222,27 +202,6 @@ export default function LandingPage(): JSX.Element {
                   >
                     <div className="w-6 h-6">{social.icon}</div>
                   </Button>
-                ))}
-              </div>
-
-              <div className="flex gap-[32px]">
-                {footerNavigation.map((column, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col w-[187px] items-end gap-[var(--variable-collection-spacing-s)]"
-                  >
-                    <div className="font-small-text text-[#5a4d3f]">
-                      {column.title}
-                    </div>
-                    {column.links.map((link, linkIndex) => (
-                      <div
-                        key={linkIndex}
-                        className="font-small-text text-[#555555]"
-                      >
-                        {link}
-                      </div>
-                    ))}
-                  </div>
                 ))}
               </div>
             </div>

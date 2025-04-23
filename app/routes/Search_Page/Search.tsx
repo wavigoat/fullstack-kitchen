@@ -10,45 +10,69 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+interface RecipeItem {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export default function Search(): JSX.Element {
+  // const [userFilters, setUserFilters] = useState({
+  //   ingredients: [] as string[], 
+  //   cookTime: "",
+  //   difficulty: "",
+  //   cuisine: "",
+  //   dietary: [] as string[],
+  // });
+  //const [showFilters, setShowFilters] = useState(false);
+
+  // const cuisineTypes = ["Italian", "Chinese", "Mexican", "Indian", "American", "Japanese"]; 
+  // const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"];
+  // const cookTimes = ["< 30 mins", "30-60 mins", "1-2 hours", "> 2 hours"];
+  // const difficultyLevels = ["Easy", "Medium", "Hard"];
+
+  // const handleFilterChange = (category: string, value: string | string[]) => {
+  //   setUserFilters(prev => ({
+  //     ...prev, // takes the previous filters, which is "...prev" and updates only the requested category with the new value, keeping the rest filters the same.
+  //     [category]: value
+  //   }));
+  // };
+
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [userFilters, setUserFilters] = useState({
-    ingredients: [] as string[], // filtering by ingredients is not currently implemented.
-    cookTime: "",
-    difficulty: "",
-    cuisine: "",
-    dietary: [] as string[],
-  });
-  const [showFilters, setShowFilters] = useState(false);
-  const [searchResults, setSearchResults] = useState([ // placeholder search results, change when we get API data from backend
-    { id: 1, title: "Recipe 1", description: "Delicious recipe description", cookTime: "30 mins", difficulty: "Easy" },
-    { id: 2, title: "Recipe 2", description: "Another tasty recipe", cookTime: "1 hour", difficulty: "Medium" },
-    { id: 3, title: "Recipe 3", description: "Something special", cookTime: "45 mins", difficulty: "Hard" },
-  ]);
+
+  const [searchResults, setSearchResults] = useState<RecipeItem[]>([]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleFilterChange = (category: string, value: string | string[]) => {
-    setUserFilters(prev => ({
-      ...prev, // takes the previous filters, which is "...prev" and updates only the requested category with the new value, keeping the rest filters the same.
-      [category]: value
-    }));
-  };
+
 
   const handleSearch = async () => {
-    // TODO: implement actual search functionality with filters and api call
-    console.log("Searching for:", searchQuery);
-    console.log("With filters:", userFilters);
+    try {
+      const encodedQuery = encodeURIComponent(searchQuery);
+      const token = localStorage.getItem('token') ?? "";
+      const response = await fetch(`http://localhost:3001/recipe/search/${encodedQuery}`,{
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Search request failed');
+      }
+      
+      const data = await response.json();
+      setSearchResults(data.results.map((recipe: any) => ({
+        id: recipe._id,
+        name: recipe.name,
+        description: recipe.description
+      })));
+    } catch (error) {
+      console.error('Error searching recipes:', error);
+    }
   };
-
-  // we could dynamically determine these from API data based on what the user has in their storage
-  const cuisineTypes = ["Italian", "Chinese", "Mexican", "Indian", "American", "Japanese"]; 
-  const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"];
-  const cookTimes = ["< 30 mins", "30-60 mins", "1-2 hours", "> 2 hours"];
-  const difficultyLevels = ["Easy", "Medium", "Hard"];
 
   return (
     <div className="min-h-screen bg-[#e6d8cc]">
@@ -58,6 +82,12 @@ export default function Search(): JSX.Element {
           FlavorShare
         </div>
         <div className="flex items-center gap-6">
+          <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/recipe')}>
+            Create a Recipe
+          </div>
+          <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/search')}>
+            Search
+          </div>
           <button 
             className="bg-[#5a4d3f] text-white px-4 py-2 rounded-lg"
             onClick={() => navigate('/profile')}
@@ -81,7 +111,7 @@ export default function Search(): JSX.Element {
                 onChange={handleSearchChange}
               />
               <button 
-                className="bg-[#5a4d3f] text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2"
+                className="bg-[#5a4d3f] text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer"
                 onClick={handleSearch}
               >
                 <span className="text-xl inline-block transform -rotate-45">⚲</span> {/* magnifying glass for style */}
@@ -89,7 +119,7 @@ export default function Search(): JSX.Element {
               </button>
             </div>
             
-            {/* Filter field and the dropdown menus, options, etc. */}
+            {/* Filter field and the dropdown menus, options, etc.
             <button
               className="text-[#5a4d3f] font-medium mb-4 flex items-center gap-2"
               onClick={() => setShowFilters(!showFilters)}
@@ -167,7 +197,8 @@ export default function Search(): JSX.Element {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
+            
           </div>
         </div>
 
@@ -180,16 +211,14 @@ export default function Search(): JSX.Element {
             >
               <div className="h-48 bg-gray-200"></div>
               <div className="p-4">
-                <h3 className="text-xl font-semibold text-[#5a4d3f]">{recipe.title}</h3>
+                <h3 className="text-xl font-semibold text-[#5a4d3f]">{recipe.name}</h3>
                 <p className="text-gray-600 mt-2">{recipe.description}</p>
-                <div className="flex gap-2 mt-3">
-                  <span className="text-sm bg-[#e6d8cc] text-[#5a4d3f] px-2 py-1 rounded">
-                    {recipe.cookTime}
-                  </span>
-                  <span className="text-sm bg-[#e6d8cc] text-[#5a4d3f] px-2 py-1 rounded">
-                    {recipe.difficulty}
-                  </span>
-                </div>
+                <button 
+                  className="mt-4 bg-[#5a4d3f] text-white px-4 py-2 rounded-lg cursor-pointer"
+                  onClick={() => navigate(`/recipe/${recipe.id}`)}
+                >
+                  View Recipe
+                </button>
               </div>
             </div>
           ))}
