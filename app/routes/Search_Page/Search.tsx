@@ -17,28 +17,37 @@ interface RecipeItem {
 }
 
 export default function Search(): JSX.Element {
+  // const [userFilters, setUserFilters] = useState({
+  //   ingredients: [] as string[], 
+  //   cookTime: "",
+  //   difficulty: "",
+  //   cuisine: "",
+  //   dietary: [] as string[],
+  // });
+  //const [showFilters, setShowFilters] = useState(false);
+
+  // const cuisineTypes = ["Italian", "Chinese", "Mexican", "Indian", "American", "Japanese"]; 
+  // const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"];
+  // const cookTimes = ["< 30 mins", "30-60 mins", "1-2 hours", "> 2 hours"];
+  // const difficultyLevels = ["Easy", "Medium", "Hard"];
+
+  // const handleFilterChange = (category: string, value: string | string[]) => {
+  //   setUserFilters(prev => ({
+  //     ...prev, // takes the previous filters, which is "...prev" and updates only the requested category with the new value, keeping the rest filters the same.
+  //     [category]: value
+  //   }));
+  // };
+
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [userFilters, setUserFilters] = useState({
-    ingredients: [] as string[], 
-    cookTime: "",
-    difficulty: "",
-    cuisine: "",
-    dietary: [] as string[],
-  });
-  const [showFilters, setShowFilters] = useState(false);
+
   const [searchResults, setSearchResults] = useState<RecipeItem[]>([]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleFilterChange = (category: string, value: string | string[]) => {
-    setUserFilters(prev => ({
-      ...prev, // takes the previous filters, which is "...prev" and updates only the requested category with the new value, keeping the rest filters the same.
-      [category]: value
-    }));
-  };
+
 
   const handleSearch = async () => {
     try {
@@ -59,11 +68,6 @@ export default function Search(): JSX.Element {
       console.error('Error searching recipes:', error);
     }
   };
-
-  const cuisineTypes = ["Italian", "Chinese", "Mexican", "Indian", "American", "Japanese"]; 
-  const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Nut-Free"];
-  const cookTimes = ["< 30 mins", "30-60 mins", "1-2 hours", "> 2 hours"];
-  const difficultyLevels = ["Easy", "Medium", "Hard"];
 
   return (
     <div className="min-h-screen bg-[#e6d8cc]">
@@ -110,7 +114,7 @@ export default function Search(): JSX.Element {
               </button>
             </div>
             
-            {/* Filter field and the dropdown menus, options, etc. */}
+            {/* Filter field and the dropdown menus, options, etc.
             <button
               className="text-[#5a4d3f] font-medium mb-4 flex items-center gap-2"
               onClick={() => setShowFilters(!showFilters)}
@@ -188,7 +192,8 @@ export default function Search(): JSX.Element {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
+            
           </div>
         </div>
 
