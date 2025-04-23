@@ -25,7 +25,7 @@ export default function Profile(): JSX.Element {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                navigate('/login');
+                navigate('/');
                 return;
             }
 
@@ -36,12 +36,16 @@ export default function Profile(): JSX.Element {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to fetch profile');
+                localStorage.removeItem('token');
+                navigate('/');
+                return;
             }
 
             const data = await response.json();
             setProfile(data.user);
         } catch (err) {
+            localStorage.removeItem('token');
+            navigate('/');
             setError(err instanceof Error ? err.message : 'Failed to fetch profile');
         }
     };
@@ -90,6 +94,11 @@ export default function Profile(): JSX.Element {
             [name]: value
         }));
     };
+
+    const signOutUser = () => {
+        localStorage.removeItem('token');
+        navigate('/');
+    }
 
     return (
         <div className="profile">
@@ -165,6 +174,9 @@ export default function Profile(): JSX.Element {
                         </div>
                         <button className="bg-[#5a4d3f] text-white px-4 py-2 rounded-lg">
                             Profile
+                        </button>
+                        <button className="bg-[#5a4d3f] cursor-pointer text-white px-4 py-2 rounded-lg" onClick={signOutUser}>
+                            Sign Out
                         </button>
                     </div>
                 </nav>
