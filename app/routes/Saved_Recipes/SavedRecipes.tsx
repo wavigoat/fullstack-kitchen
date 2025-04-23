@@ -32,9 +32,8 @@ export default function SavedRecipes(): JSX.Element {
             }
 
             const userData = await response.json();
-            const userId = userData.user._id;
 
-            const recipesResponse = await fetch(`http://localhost:3001/recipe/getall/${userId}`, {
+            const recipesResponse = await fetch(`http://localhost:3001/recipe/getall`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -14,7 +14,12 @@ export default function ViewRecipe(): JSX.Element {
     useEffect(() => {
         const fetchRecipe = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/recipe/get/${id}`);
+                const token = localStorage.getItem('token') ?? "";
+                const response = await fetch(`http://localhost:3001/recipe/get/${id}`,{
+                    headers:{
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 if (!response.ok) {
                     throw new Error('Recipe not found');
                 }

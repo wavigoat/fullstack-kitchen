@@ -52,7 +52,12 @@ export default function Search(): JSX.Element {
   const handleSearch = async () => {
     try {
       const encodedQuery = encodeURIComponent(searchQuery);
-      const response = await fetch(`http://localhost:3001/recipe/search/${encodedQuery}`);
+      const token = localStorage.getItem('token') ?? "";
+      const response = await fetch(`http://localhost:3001/recipe/search/${encodedQuery}`,{
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
+      });
       
       if (!response.ok) {
         throw new Error('Search request failed');

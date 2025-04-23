@@ -53,6 +53,18 @@ function jwtAuth(req, res, next) { // Middleware for JWT token, pulls info from 
     }
 }
 
+function jwtOptional(req, res, next) { // Middleware for JWT token, pulls info from Authorization bearer token.
+    const token = req.header("Authorization")?.split(" ")[1];
+    if (!token) return next();
+    try {
+        req.user = jwt.verify(token, secret);
+        next();
+    } catch (err) {
+        req.user = undefined;
+        next();
+    }
+}
+
 app.post('/account/register', async (req, res) => {
     try{
         await dbInit();
@@ -225,6 +237,7 @@ app.post('/recipe/new', jwtAuth, async (req, res) => {
             description: newData.description,
             owner: account._id,
             likes: 0,
+            "public" : newData.public === true,
             createdAt: new Date(),
         }
         await recipes.insertOne(newRecipe); // Add recipe to db
@@ -237,7 +250,7 @@ app.post('/recipe/new', jwtAuth, async (req, res) => {
     }
 })
 
-app.get('/recipe/get/:id', async (req, res) => {
+app.get('/recipe/get/:id', jwtOptional, async (req, res) => {
     try{
         await dbInit();
         const recipes = await db.collection('recipes');
@@ -251,6 +264,10 @@ app.get('/recipe/get/:id', async (req, res) => {
             res.status(400).json({error: "Recipe does not exist"})
             return
         }
+        if(!recipe.public && recipe.owner !== req.user?._id) { // Check if recipe is public or owned by user
+            res.status(400).json({error: "Cannot access Recipe"})
+            return;
+        }
 
         res.status(200).json({recipe});
 
@@ -259,12 +276,12 @@ app.get('/recipe/get/:id', async (req, res) => {
     }
 })
 
-app.get('/recipe/getall/:id', async (req, res) => {
+app.get('/recipe/getall',jwtAuth, async (req, res) => {
     try{
         await dbInit();
         const recipes = await db.collection('recipes');
 
-        let id = req.params.id; // Get user id from params to search for
+        let id = req.user._id; // Get user id from params to search for
         if(id === undefined){
             res.status(400).json({})
             return;
@@ -293,7 +310,7 @@ app.get('/recipe/popular', async (req, res) => {
         const pageSize = 10;
         const skipCount = page * pageSize;
 
-        const popularRecipes = await recipes.find({}) // Sort Recipes by like/save count. And keep top 10, from current page count
+        const popularRecipes = await recipes.find({public: true}) // Sort Recipes by like/save count. And keep top 10, from current page count
             .sort({ likes: -1 })
             .skip(skipCount)
             .limit(pageSize)
@@ -306,7 +323,7 @@ app.get('/recipe/popular', async (req, res) => {
     }
 });
 
-app.get('/recipe/search/:name', async (req, res) => {
+app.get('/recipe/search/:name', jwtOptional, async (req, res) => {
     try {
         await dbInit();
         const recipes = await db.collection('recipes');
@@ -320,7 +337,10 @@ app.get('/recipe/search/:name', async (req, res) => {
         const page = parseInt(req.query.page) || 0;
         const pageSize = 10;
 
-        const allRecipes = await recipes.find({}).toArray(); // Grab all recipes
+        const allRecipes = await recipes.find({$or: [
+                { public: true },
+                { owner: req.user?._id }
+            ]}).toArray(); // Grab all recipes that are public, or owned by user
 
         const fuseSearch = new fuse(allRecipes, { // Create a new fuse object for searching
             keys: ['name', 'description'],
