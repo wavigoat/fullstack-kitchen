@@ -7,15 +7,39 @@ import { useNavigate } from "react-router";
 import type { JSX } from "react";
 import "../../style.css";
 
+interface Recipe {
+  _id: string;
+  name: string;
+  description: string;
+  likes: number;
+  createdAt: string;
+}
 
 export default function LandingPage(): JSX.Element {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [popularRecipes, setPopularRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(token !== null);
+    fetchPopularRecipes();
   }, []);
+
+  const fetchPopularRecipes = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/recipe/popular');
+      const data = await response.json();
+      if (data.recipes) {
+        setPopularRecipes(data.recipes);
+      }
+    } catch (error) {
+      console.error('Error fetching popular recipes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const checkAuthAndNavigate = (path: string) => {
     const token = localStorage.getItem('token');
@@ -38,29 +62,6 @@ export default function LandingPage(): JSX.Element {
     {
       title: "Topic",
       links: ["Page", "Page", "Page"],
-    },
-  ];
-
-  const recentRecipes = [
-    {
-      id: 1,
-      title: "Recipe 1",
-      description:
-        "Body text for whatever you'd like to add more to the subheading.",
-      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-1.png)]",
-    },
-    {
-      id: 2,
-      title: "Recipe 2",
-      description:
-        "Body text for whatever you'd like to expand on the main point.",
-      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-2.png)]",
-    },
-    {
-      id: 3,
-      title: "Recipe 3",
-      description: "Body text for whatever you'd like to share more.",
-      imageBg: "bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Image-3.png)]",
     },
   ];
 
@@ -128,36 +129,45 @@ export default function LandingPage(): JSX.Element {
         {/* Main Image */}
         <div className="w-[1280px] h-[640px] mt-[337px] mx-16 rounded-lg bg-[url(https://file.garden/ZaN3pZzqMBk7KeIf/Hero%20Image.png)] bg-cover bg-[50%_50%]" />
 
-        {/* Recent Recipes Section */}
+        {/* Popular Recipes Section */}
         <section className="mt-[181px] px-20">
           <h2 className="[font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#5a4d3f] text-5xl tracking-[-0.96px] leading-[normal] mb-[107px]">
-            Recent Recipes
+            Popular Recipes
           </h2>
 
-          <div className="flex items-center gap-8">
-            {recentRecipes.map((recipe) => (
-              <Card
-                key={recipe.id}
-                className="flex-1 bg-transparent border-none"
-              >
-                <CardContent className="p-0">
-                  <div className="flex flex-col items-start gap-6">
-                    <div
-                      className={`w-full h-[405px] rounded-lg ${recipe.imageBg} bg-cover bg-[50%_50%]`}
-                    />
-                    <div className="flex flex-col w-full items-start justify-center gap-1">
-                      <h3 className="[font-family:'Inter-Medium',Helvetica] font-medium text-[#5a4d3f] text-2xl tracking-[0] leading-9">
-                        {recipe.title}
-                      </h3>
-                      <p className="[font-family:'Inter-Regular',Helvetica] font-normal text-[#5f403b] text-2xl tracking-[0] leading-9">
-                        {recipe.description}
-                      </p>
+          {loading ? (
+            <div className="flex justify-center items-center h-[405px]">
+              <p className="text-[#5a4d3f] text-xl">Loading recipes...</p>
+            </div>
+          ) : popularRecipes.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {popularRecipes.map((recipe) => (
+                <div 
+                  key={recipe._id} 
+                  className="bg-white rounded-lg shadow-md overflow-hidden"
+                >
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold text-[#5a4d3f]">{recipe.name}</h3>
+                    <p className="text-gray-600 mt-2">{recipe.description}</p>
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-[#5a4d3f]">❤️ {recipe.likes}</span>
+                      <button 
+                        className="bg-[#5a4d3f] text-white px-4 py-2 rounded-lg cursor-pointer"
+                        onClick={() => navigate(`/recipe/${recipe._id}`)}
+                      >
+                        View Recipe
+                      </button>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-[405px]">
+              <p className="text-[#5a4d3f] text-xl">No popular recipes found</p>
+            </div>
+          )}
         </section>
 
         {/* About Us Section */}

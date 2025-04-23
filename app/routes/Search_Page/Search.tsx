@@ -106,7 +106,7 @@ export default function Search(): JSX.Element {
                 onChange={handleSearchChange}
               />
               <button 
-                className="bg-[#5a4d3f] text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2"
+                className="bg-[#5a4d3f] text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer"
                 onClick={handleSearch}
               >
                 <span className="text-xl inline-block transform -rotate-45">⚲</span> {/* magnifying glass for style */}
@@ -209,7 +209,7 @@ export default function Search(): JSX.Element {
                 <h3 className="text-xl font-semibold text-[#5a4d3f]">{recipe.name}</h3>
                 <p className="text-gray-600 mt-2">{recipe.description}</p>
                 <button 
-                  className="mt-4 bg-[#5a4d3f] text-white px-4 py-2 rounded-lg"
+                  className="mt-4 bg-[#5a4d3f] text-white px-4 py-2 rounded-lg cursor-pointer"
                   onClick={() => navigate(`/recipe/${recipe.id}`)}
                 >
                   View Recipe
