@@ -1,18 +1,31 @@
-// Import necessary components, icons, and styles
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import type { JSX } from "react";
 import "../../style.css";
 
 
-// Define the LandingPage component
 export default function LandingPage(): JSX.Element {
-  // Footer navigation data
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(token !== null);
+  }, []);
+
+  const checkAuthAndNavigate = (path: string) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    } else {
+      navigate(path);
+    }
+  };
+
   const footerNavigation = [
     {
       title: "Topic",
@@ -28,7 +41,6 @@ export default function LandingPage(): JSX.Element {
     },
   ];
 
-  // Recent recipes data
   const recentRecipes = [
     {
       id: 1,
@@ -52,16 +64,15 @@ export default function LandingPage(): JSX.Element {
     },
   ];
 
-  // About us sections data
   const aboutSections = [
     {
       title: "Who Are We?",
-      content: "At FullStack Kitchen, we are a passionate team of developers dedicated to creating intuitive, accessible, and powerful solutions for culinary enthusiasts. Our app, FlavorShare, aims to revolutionize the way home cooks and food lovers organize, manage, and share their recipes. With a focus on simplicity and functionality, we are building a platform that enhances the cooking experience by providing an interactive and user-friendly recipe management system. Whether you’re storing a cherished family recipe or discovering new culinary inspirations, we strive to make cooking more enjoyable, efficient, and connected.",
+      content: "At FullStack Kitchen, we are a passionate team of developers dedicated to creating intuitive, accessible, and powerful solutions for culinary enthusiasts. Our app, FlavorShare, aims to revolutionize the way home cooks and food lovers organize, manage, and share their recipes. With a focus on simplicity and functionality, we are building a platform that enhances the cooking experience by providing an interactive and user-friendly recipe management system. Whether you're storing a cherished family recipe or discovering new culinary inspirations, we strive to make cooking more enjoyable, efficient, and connected.",
     },
     {
       title: "Mission Statement",
       content:
-        "Our mission is to empower home cooks, food enthusiasts, and culinary creators by providing a seamless, organized, and social platform to store, share, and discover recipes. We believe that great cooking should be made easy, and with FlavorShare, we are dedicated to turning recipes into something more than just instructions—they’re a way to connect, share, and inspire others in the kitchen.",
+        "Our mission is to empower home cooks, food enthusiasts, and culinary creators by providing a seamless, organized, and social platform to store, share, and discover recipes. We believe that great cooking should be made easy, and with FlavorShare, we are dedicated to turning recipes into something more than just instructions—they're a way to connect, share, and inspire others in the kitchen.",
     },
     {
       title: "Subheading",
@@ -70,7 +81,6 @@ export default function LandingPage(): JSX.Element {
     },
   ];
 
-  // Social media icons
   const socialIcons = [
     { icon: <Facebook className="w-5 h-5" />, alt: "Facebook" },
     { icon: <Twitter className="w-5 h-5" />, alt: "Twitter" },
@@ -86,11 +96,13 @@ export default function LandingPage(): JSX.Element {
           <div className="flex items-center justify-between px-20 py-14">
             <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/')}>FlavorShare</div>
             <div className="flex items-center gap-[var(--variable-collection-spacing-m)]">
-              <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/login')}>Create a Recipe</div>
-              <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/login')}>Search</div>
-              <Button className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow"
-              onClick={() => navigate("/login")}>
-                Log In
+              <div className="font-body-text text-[#5a4d3f] cursor-pointer" onClick={() => checkAuthAndNavigate('/recipe')}>Create a Recipe</div>
+              <div className="font-body-text text-[#5a4d3f] cursor-pointer" onClick={() => checkAuthAndNavigate('/search')}>Search</div>
+              <Button 
+                className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow cursor-pointer"
+                onClick={() => isAuthenticated ? navigate('/profile') : navigate('/login')}
+              >
+                {isAuthenticated ? 'Profile' : 'Log In'}
               </Button>
             </div>
           </div>
