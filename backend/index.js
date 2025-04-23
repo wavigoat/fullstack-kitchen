@@ -146,6 +146,7 @@ app.get('/account/info', jwtAuth, async (req, res) => {
         let account = await accounts.findOne({$and:[{_id:req.user._id}, {username:req.user.username}]});
         if(!account){
             res.status(400).json({error: "Account does not exist"})
+            return;
         }
 
         const {passwordHash, ...user} = account;
