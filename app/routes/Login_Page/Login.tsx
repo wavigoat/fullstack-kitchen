@@ -1,4 +1,3 @@
-// Import necessary modules and assets
 import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router";
 import icon from "../../assets/icons/Icon.png";
@@ -8,16 +7,13 @@ import icon4 from "../../assets/icons/Icon-3.png";
 import type { Route } from "../../../.react-router/types/app/routes/+types/home";
 import "../../style.css";
 
-// Define metadata for the login page
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Login Page" },
     { name: "login", content: "Login to your account!" },
   ];
 }
-// Define the LogIn component
 export default function LogIn(): JSX.Element {
-  // Initialize navigation hook + Inputs
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +28,6 @@ export default function LogIn(): JSX.Element {
     setPassword(e.target.value);
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     try {
 
@@ -50,9 +45,8 @@ export default function LogIn(): JSX.Element {
       const data = await response.json();
 
       if (response.ok) {
-        // Store the token in localStorage
+        // Store the token in local storage
         localStorage.setItem('token', data.token);
-        // Navigate to profile page on success
         navigate("/profile");
         return;
       }
@@ -66,7 +60,6 @@ export default function LogIn(): JSX.Element {
   };
 
   return (
-    // Main container for the login page
     <div className="log-in">
       <div className="div">
         {/* Header section */}

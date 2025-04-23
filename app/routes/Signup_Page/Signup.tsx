@@ -1,4 +1,3 @@
-// Import necessary modules and assets
 import React, { useState, type JSX } from "react";
 import { useNavigate } from "react-router";
 import icon from "../../assets/icons/Icon.png";
@@ -15,10 +14,8 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-// Define the SignUp component
 export default function SignUp(): JSX.Element {
   const navigate = useNavigate();
-  // State for username, password, email, eorror input
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -36,7 +33,7 @@ export default function SignUp(): JSX.Element {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = async () => { // UNTESTED
+  const handleSubmit = async () => {
     try {
 
       const response = await fetch('http://localhost:3001/account/register', {
@@ -70,7 +67,6 @@ export default function SignUp(): JSX.Element {
   };
 
   return (
-    // Main container for the signup page
     <div className="sign-in">
       <div className="div">
       {/* Header section */}
