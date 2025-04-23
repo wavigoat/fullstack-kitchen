@@ -96,10 +96,10 @@ export default function LandingPage(): JSX.Element {
           <div className="flex items-center justify-between px-20 py-14">
             <div className="font-body-text text-[#5a4d3f]" onClick={() => navigate('/')}>FlavorShare</div>
             <div className="flex items-center gap-[var(--variable-collection-spacing-m)]">
-              <div className="font-body-text text-[#5a4d3f]" onClick={() => checkAuthAndNavigate('/recipe')}>Create a Recipe</div>
-              <div className="font-body-text text-[#5a4d3f]" onClick={() => checkAuthAndNavigate('/search')}>Search</div>
+              <div className="font-body-text text-[#5a4d3f] cursor-pointer" onClick={() => checkAuthAndNavigate('/recipe')}>Create a Recipe</div>
+              <div className="font-body-text text-[#5a4d3f] cursor-pointer" onClick={() => checkAuthAndNavigate('/search')}>Search</div>
               <Button 
-                className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow"
+                className="bg-[#5a4d3f] text-white rounded-lg shadow-button-shadow cursor-pointer"
                 onClick={() => isAuthenticated ? navigate('/profile') : navigate('/login')}
               >
                 {isAuthenticated ? 'Profile' : 'Log In'}

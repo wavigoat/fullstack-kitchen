@@ -58,6 +58,12 @@ export default function Search(): JSX.Element {
           FlavorShare
         </div>
         <div className="flex items-center gap-6">
+          <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/recipe')}>
+            Create a Recipe
+          </div>
+          <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/search')}>
+            Search
+          </div>
           <button 
             className="bg-[#5a4d3f] text-white px-4 py-2 rounded-lg"
             onClick={() => navigate('/profile')}
