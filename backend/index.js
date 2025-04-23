@@ -165,6 +165,7 @@ app.post('/account/update', jwtAuth, async (req, res) => {
         let account = await accounts.findOne({$and:[{_id:req.user._id}, {username:req.user.username}]});
         if(!account){
             res.status(400).json({error: "Account does not exist"})
+            return;
         }
 
         let newData = req.body;
@@ -198,6 +199,7 @@ app.post('/recipe/new', jwtAuth, async (req, res) => {
         let account = await accounts.findOne({$and:[{_id:req.user._id}, {username:req.user.username}]});
         if(!account){
             res.status(400).json({error: "Account does not exist"})
+            return;
         }
 
         let newData = req.body;
