@@ -152,25 +152,22 @@ export default function Profile(): JSX.Element {
 
                 <div className="image" style={{ backgroundImage: profile.image ? `url(${profile.image})` : 'none' }} />
                 {/* Header section */}
-                <div className="navigation">
-                    <div className="overlap-group">
-                        
-
-                        <div className="navigation">
-                            <div className="items-2">
-                                <div className="text-wrapper-3" onClick={() => navigate('/recipe')}>Create a Recipe</div>
-
-                                <div className="text-wrapper-3" onClick={() => navigate('/search')}>Search</div>
-
-                                <button className="div-wrapper">
-                                    <div className="text-wrapper-6" onClick={() => navigate('/profile')}>Profile</div>
-                                </button>
-                            </div>
-
-                            <div className="text-wrapper-5">FlavorShare</div>
-                        </div>
+                <nav className="bg-[#e6d8cc] p-4 flex justify-between items-center">
+                    <div className="text-[#5a4d3f] text-xl cursor-pointer" onClick={() => navigate('/')}>
+                        FlavorShare
                     </div>
-                </div>
+                    <div className="flex items-center gap-6">
+                        <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/recipe')}>
+                            Create a Recipe
+                        </div>
+                        <div className="text-[#5a4d3f] cursor-pointer" onClick={() => navigate('/search')}>
+                            Search
+                        </div>
+                        <button className="bg-[#5a4d3f] text-white px-4 py-2 rounded-lg">
+                            Profile
+                        </button>
+                    </div>
+                </nav>
                 {/* Footer section */}
                 <div className="navigation-footer">
                     <div className="items-3">
